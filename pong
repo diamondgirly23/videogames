@@ -1,0 +1,134 @@
+import turtle
+import time
+import winsound
+
+
+
+
+
+
+wn = turtle.Screen()
+wn.title("Pong by diamondgirly23")
+wn.bgcolor("black")
+wn.setup(width=800,height=600)
+wn.tracer(0)
+#paddle A
+paddleA = turtle.Turtle()
+paddleA.speed(0)
+paddleA.shape("square")
+paddleA.color("white")
+paddleA.penup()
+paddleA.goto(-350,0)
+paddleA.shapesize(stretch_wid=5,stretch_len=1)
+#paddle B
+paddleB = turtle.Turtle()
+paddleB.speed(0)
+paddleB.shape("square")
+paddleB.color("white")
+paddleB.penup()
+paddleB.goto(350,0)
+paddleB.shapesize(stretch_wid=5,stretch_len=1)
+# score
+scoreA = 0
+scoreB = 0
+#Ball
+Ball = turtle.Turtle()
+Ball.speed(0)
+Ball.shape("square")
+Ball.color("white")
+Ball.penup()
+Ball.goto(0,0)
+speed = .1
+Ball.dx = speed
+Ball.dy = speed
+# PEN
+pen = turtle.Turtle()
+pen.speed(0)
+pen.color("white")
+pen.penup()
+pen.hideturtle()
+pen.goto(0,260)
+pen.write("Player A: 0 Player B: 0",align="center",font=("Courier", 24,"normal"))
+
+def PaddleADOWN():
+    Y = paddleA.ycor()
+    if Y <= -250:
+        pass
+    else:
+        Y-= 20
+    paddleA.sety(Y)
+def PaddleAUP():
+    Y = paddleA.ycor()
+    if Y >= 250:
+        pass
+    else:
+        Y += 20
+    paddleA.sety(Y)
+def PaddleBDOWN():
+    Y = paddleB.ycor()
+    if Y <= -250:
+        pass
+    else:
+        Y -= 20
+    paddleB.sety(Y)
+def PaddleBUP():
+    Y = paddleB.ycor()
+    if Y >= 250:
+        pass
+    else:
+        Y += 20
+    paddleB.sety(Y)
+
+#keyboard binding
+turtle.listen()
+turtle.onkeypress(PaddleAUP,"w")
+turtle.onkeypress(PaddleADOWN,"s")
+turtle.onkeypress(PaddleBUP,"Up")
+turtle.onkeypress(PaddleBDOWN,"Down")
+
+#main game loop
+
+while True:
+    wn.update()
+
+
+    #moving ball
+
+    Ball.setx(Ball.xcor() + Ball.dx)
+    Ball.sety(Ball.ycor()+ Ball.dy)
+
+    #border check
+    if Ball.ycor() > 290:
+        Ball.sety(290)
+        Ball.dy *= -1
+        
+    if Ball.ycor() < -285:
+        Ball.sety(-285)
+        Ball.dy *= -1
+        
+    if Ball.xcor() > 405:
+        time.sleep(1)
+        Ball.goto(0,0)
+        Ball.dx *= -1
+        scoreA +=1
+        Ball.dx = speed
+        pen.clear()
+        pen.write("Player A: {} Player B: {}".format(scoreA,scoreB), align="center", font=("Courier", 24, "normal"))
+    if Ball.xcor() < -410:
+        time.sleep(1)
+        Ball.goto(0,0)
+        Ball.dx *= -1
+        scoreB +=1
+        Ball.dx = speed
+        pen.clear()
+        pen.write("Player A: {} Player B: {}".format(scoreA, scoreB), align="center", font=("Courier", 24, "normal"))
+    #paddlecollisions
+    if (Ball.xcor() > 340 and Ball.xcor() <350)and (Ball.ycor() < paddleB.ycor()+40 and Ball.ycor() > paddleB.ycor() - 40):
+        Ball.setx(340)
+        Ball.dx *= -1.15
+        
+
+    if (Ball.xcor() < -340 and Ball.xcor() >-350)and (Ball.ycor() < paddleA.ycor()+40 and Ball.ycor() > paddleA.ycor() - 40):
+        Ball.setx(-340)
+        Ball.dx *= -1.15
+        
